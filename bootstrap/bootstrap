@@ -1,0 +1,9 @@
+#!/bin/bash
+mkdir -p ../appdata/mongo/data/db
+mkdir -p ../appdata/mongo/var/lib/mongodb
+mkdir -p ../appdata/mongo/log/mongodb/
+mkdir -p ../appdata/keyserver
+set -a
+source ../settings/mongo.env
+set +a
+sudo ./expect "$MONGODB_ADMIN_USER" "$MONGODB_ADMIN_PASS" "$KEYSERVER_MONGODB_USER" "$KEYSERVER_MONGODB_PASS"

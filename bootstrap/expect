@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+
+set MONGODB_ADMIN_USER [lindex $argv 0]
+set MONGODB_ADMIN_PASS [lindex $argv 1]
+set KEYSERVER_MONGODB_USER [lindex $argv 2]
+set KEYSERVER_MONGODB_PASS [lindex $argv 3]
+
+spawn ./mongo-setup
+
+expect ":/#" { send "mongod & sleep 5 && mongo\r" }
+
+expect "> " { send "use admin\r" }
+
+expect "> " { send "db.createUser(\r  {\r    user: \"$MONGODB_ADMIN_USER\",\r    pwd: \"$MONGODB_ADMIN_PASS\", // or cleartext password\r    roles: \[ { role: \"userAdminAnyDatabase\", db: \"admin\" }, \"readWriteAnyDatabase\" \]\r  }\r)\r" } 
+
+expect "> " { send "use keyserver\r" } 
+
+expect "> " { send "db.createUser(\r  {\r    user: \"$KEYSERVER_MONGODB_USER\",\r    pwd: \"$KEYSERVER_MONGODB_PASS\",  // or cleartext password\r    roles: \[\r       { role: \"readWrite\", db: \"keyserver\" }\r    \]\r  }\r)\r" }
+
+expect "> " { send "exit\r" }
+
+expect ":/#" { send "exit\r" }
+
+interact
+
