@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 cp -r settings.example settings
 
 echo "Enter the mongo admin username"
@@ -25,10 +25,10 @@ if [ "$KEYSERVER_MONGODB_PASS" != "$KEYSERVER_MONGODB_PASS2" ]; then
     exit
 fi
 
-sed '/MONGODB_ADMIN_USER/d' ./settings/mongo.env > /dev/null
-sed '/MONGODB_ADMIN_PASS/d' ./settings/mongo.env > /dev/null
-sed '/KEYSERVER_MONGODB_USER/d' ./settings/mongo.env > /dev/null
-sed '/KEYSERVER_MONGODB_PASS/d' ./settings/mongo.env > /dev/null
+sed -i '/MONGODB_ADMIN_USER/d' ./settings/mongo.env > /dev/null
+sed -i '/MONGODB_ADMIN_PASS/d' ./settings/mongo.env > /dev/null
+sed -i '/KEYSERVER_MONGODB_USER/d' ./settings/mongo.env > /dev/null
+sed -i '/KEYSERVER_MONGODB_PASS/d' ./settings/mongo.env > /dev/null
 
 echo "MONGODB_ADMIN_USER=$MONGODB_ADMIN_USER" >> ./settings/mongo.env
 echo "MONGODB_ADMIN_PASS=$MONGODB_ADMIN_PASS" >> ./settings/mongo.env
