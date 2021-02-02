@@ -1,5 +1,4 @@
 #!/bin/bash
-echo "MOUNTING: $PWD/../xappdata/mongo/data/db:/data/db"
 sudo docker run --rm -it --entrypoint /bin/bash \
-  -v $PWD/../appdata/mongo/data/db:/data/db\
+  -v $PWD/../appdata/mongo/data/db:/data/db \
   mongo:bionic

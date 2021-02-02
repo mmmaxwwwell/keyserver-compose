@@ -1,39 +1,39 @@
 #!/bin/bash
 [[ -d settings ]] || cp -r settings.example settings
 
-echo "Enter the mongo admin username"
-read MONGODB_ADMIN_USER
+# echo "Enter the mongo admin username"
+# read MONGODB_ADMIN_USER
 
-echo "Enter the mongo admin password:"
-read -s MONGODB_ADMIN_PASS
-echo "Enter the mongo admin password again:"
-read -s MONGODB_ADMIN_PASS2
-if [ "$MONGODB_ADMIN_PASS" != "$MONGODB_ADMIN_PASS2" ]; then
-    echo "password mismatch, retry"
-    exit
-fi
+# echo "Enter the mongo admin password:"
+# read -s MONGODB_ADMIN_PASS
+# echo "Enter the mongo admin password again:"
+# read -s MONGODB_ADMIN_PASS2
+# if [ "$MONGODB_ADMIN_PASS" != "$MONGODB_ADMIN_PASS2" ]; then
+#     echo "password mismatch, retry"
+#     exit
+# fi
 
-echo "Enter the keyserver mongo username"
-read KEYSERVER_MONGODB_USER
+# echo "Enter the keyserver mongo username"
+# read KEYSERVER_MONGODB_USER
 
-echo "Enter the keyserver mongo password:"
-read -s KEYSERVER_MONGODB_PASS
-echo "Enter the keyserver mongo password again:"
-read -s KEYSERVER_MONGODB_PASS2
-if [ "$KEYSERVER_MONGODB_PASS" != "$KEYSERVER_MONGODB_PASS2" ]; then
-    echo "password mismatch, retry"
-    exit
-fi
+# echo "Enter the keyserver mongo password:"
+# read -s KEYSERVER_MONGODB_PASS
+# echo "Enter the keyserver mongo password again:"
+# read -s KEYSERVER_MONGODB_PASS2
+# if [ "$KEYSERVER_MONGODB_PASS" != "$KEYSERVER_MONGODB_PASS2" ]; then
+#     echo "password mismatch, retry"
+#     exit
+# fi
 
-sed -i '/MONGODB_ADMIN_USER/d' ./settings/mongo.env > /dev/null
-sed -i '/MONGODB_ADMIN_PASS/d' ./settings/mongo.env > /dev/null
-sed -i '/KEYSERVER_MONGODB_USER/d' ./settings/mongo.env > /dev/null
-sed -i '/KEYSERVER_MONGODB_PASS/d' ./settings/mongo.env > /dev/null
+# sed -i '/MONGODB_ADMIN_USER/d' ./settings/mongo.env > /dev/null
+# sed -i '/MONGODB_ADMIN_PASS/d' ./settings/mongo.env > /dev/null
+# sed -i '/KEYSERVER_MONGODB_USER/d' ./settings/mongo.env > /dev/null
+# sed -i '/KEYSERVER_MONGODB_PASS/d' ./settings/mongo.env > /dev/null
 
-echo "MONGODB_ADMIN_USER=$MONGODB_ADMIN_USER" >> ./settings/mongo.env
-echo "MONGODB_ADMIN_PASS=$MONGODB_ADMIN_PASS" >> ./settings/mongo.env
-echo "KEYSERVER_MONGODB_USER=$KEYSERVER_MONGODB_USER" >> ./settings/mongo.env
-echo "KEYSERVER_MONGODB_PASS=$KEYSERVER_MONGODB_PASS" >> ./settings/mongo.env
+# echo "MONGODB_ADMIN_USER=$MONGODB_ADMIN_USER" >> ./settings/mongo.env
+# echo "MONGODB_ADMIN_PASS=$MONGODB_ADMIN_PASS" >> ./settings/mongo.env
+# echo "KEYSERVER_MONGODB_USER=$KEYSERVER_MONGODB_USER" >> ./settings/mongo.env
+# echo "KEYSERVER_MONGODB_PASS=$KEYSERVER_MONGODB_PASS" >> ./settings/mongo.env
 
 echo "Setting up mongo admin and keyserver user..."
 cd bootstrap

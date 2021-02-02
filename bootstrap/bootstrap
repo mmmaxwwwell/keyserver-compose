@@ -1,7 +1,6 @@
 #!/bin/bash
 mkdir -p ../appdata/mongo/data/db
-mkdir -p ../appdata/mongo/var/lib/mongodb
-mkdir -p ../appdata/mongo/log/mongodb/
+mkdir -p ../appdata/mongo/data/log
 mkdir -p ../appdata/keyserver
 set -a
 source ../settings/mongo.env

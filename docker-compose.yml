@@ -20,12 +20,14 @@ services:
     restart: always
     volumes:
       - ./appdata/mongo/data/db:/data/db
-      # - ./appdata/mongo/var/lib/mongodb:/var/lib/mongodb
-      # - ./settings/mongod.conf:/etc/mongod.conf
-    env_file:
-      - ./settings/mongo.env
+      - ./appdata/mongo/data/log:/data/log
+      - ./settings/mongod.conf:/etc/mongod.conf
     networks:
       - keyserver-db
+    ports: 
+      - "27017:27017"
+    command: mongod --config /etc/mongod.conf
+
 networks:
   keyserver-db:
   keyserver:
