@@ -1,28 +1,31 @@
 version: '3'
 services:
   keyserver:
-    #image: mmmaxwwwell/keyserver
-    build:
-      context: ./keyserver/
-      dockerfile: ./Dockerfile
+    image: mmmaxwwwell/keyserver
+    # build:
+    #   context: ./keyserver/
+    #   dockerfile: ./Dockerfile
     container_name: keyserver
     restart: always
-
     env_file:
       - ./settings/keyserver.env
     networks:
+      - keyserver-db
       - keyserver
+    ports: 
+     - "80:80"
   mongo:
     image: mongo:bionic
     container_name: mongo
     restart: always
     volumes:
       - ./appdata/mongo/data/db:/data/db
-      - ./appdata/mongo/var/lib/mongodb:/var/lib/mongodb
-      - ./settings/mongod.conf:/etc/mongod.conf
+      # - ./appdata/mongo/var/lib/mongodb:/var/lib/mongodb
+      # - ./settings/mongod.conf:/etc/mongod.conf
     env_file:
       - ./settings/mongo.env
     networks:
-      - keyserver
+      - keyserver-db
 networks:
+  keyserver-db:
   keyserver:

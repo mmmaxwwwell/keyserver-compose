@@ -1,5 +1,5 @@
 #!/bin/bash
-cp -r settings.example settings
+[[ -d settings ]] || cp -r settings.example settings
 
 echo "Enter the mongo admin username"
 read MONGODB_ADMIN_USER
@@ -37,7 +37,7 @@ echo "KEYSERVER_MONGODB_PASS=$KEYSERVER_MONGODB_PASS" >> ./settings/mongo.env
 
 echo "Setting up mongo admin and keyserver user..."
 cd bootstrap
-./bootstrap > /dev/null
+./bootstrap
 cd ..
 
 echo "Setup complete"
