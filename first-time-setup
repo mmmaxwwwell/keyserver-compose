@@ -1,6 +1,9 @@
 #!/bin/bash
 [[ -d settings ]] || cp -r settings.example settings
 
+mkdir -p ./appdata/nginx
+[[ -d ./appdata/nginx/dhparam.pem ]] || openssl dhparam -out ./appdata/nginx/dhparam.pem 4096
+
 if [ -d "./settings" ] 
 then
     echo "It looks like the settings folder already exists."
@@ -55,7 +58,5 @@ if [ "$RELOAD" == "y" ]; then
     ./bootstrap
     cd ..
 fi
-
-
 
 echo "Setup complete"
