@@ -18,7 +18,7 @@ http {
   server {
     listen 80;
     #root /var/www/html;
-    server_name ${HOSTED_URL} www.${HOSTED_URL} keys.${HOSTED_URL};
+    server_name ${HOSTED_URL} www.${HOSTED_URL} ${KEYSERVER_SUBDOMAIN}${HOSTED_URL};
 
     location ~ /\.(?!well-known) {
       #deny all;
@@ -88,7 +88,7 @@ http {
 
   server {
     listen 443 ssl;
-    server_name keys.${HOSTED_URL};
+    server_name ${KEYSERVER_SUBDOMAIN}${HOSTED_URL};
     location / {
       proxy_pass http://keyserver:80;
     }

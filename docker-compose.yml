@@ -51,7 +51,7 @@ services:
     - web-root:/var/www/html
     depends_on:
     - nginx
-    command: certonly --staging --rsa-key-size 4096 --webroot --noninteractive --webroot-path=/var/www/html --email ${ADMIN_EMAIL} --agree-tos --no-eff-email -d ${HOSTED_URL} -d www.${HOSTED_URL} --expand
+    command: certonly --staging --rsa-key-size 4096 --webroot --noninteractive --webroot-path=/var/www/html --email ${ADMIN_EMAIL} --agree-tos --no-eff-email -d ${HOSTED_URL} -d ${KEYSERVER_SUBDOMAIN}${HOSTED_URL} -d www.${HOSTED_URL} --expand
 volumes:
   certbot-etc:
   certbot-var:
