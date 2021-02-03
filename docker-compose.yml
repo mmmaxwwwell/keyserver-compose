@@ -24,8 +24,8 @@ services:
       - ./settings/mongod.conf:/etc/mongod.conf
     networks:
       - keyserver-db
-    ports: 
-      - "27017:27017"
+    # ports: 
+    #   - "27017:27017"
     command: mongod --config /etc/mongod.conf
 
 networks:
