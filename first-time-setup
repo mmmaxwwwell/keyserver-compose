@@ -59,4 +59,8 @@ if [ "$RELOAD" == "y" ]; then
     cd ..
 fi
 
+#copy temp certs
+source ./settings/common.env
+sudo docker run --rm -it -v ${PWD##*/}_certbot-etc:/certbot-etc -v $(pwd)/staging-certs:/staging-certs bash /usr/local/bin/bash -c " mkdir -p /certbot-etc/live/$HOSTED_URL;cp /staging-certs/* /certbot-etc/live/$HOSTED_URL"
+
 echo "Setup complete"

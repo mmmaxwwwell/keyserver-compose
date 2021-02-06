@@ -1,0 +1,6 @@
+#!/bin/bash
+source ./settings/common.env
+sudo docker container ps -a | awk '{if(NR>1)print}' | awk '{print $1}' | xargs sudo docker container rm
+sudo docker volume ls |awk '{if(NR>1)print}' | awk '{print $2}'| xargs sudo docker volume rm
+sudo docker run --rm -it -v ${PWD##*/}_certbot-etc:/certbot-etc -v $(pwd)/staging-certs:/staging-certs bash /usr/local/bin/bash -c " mkdir -p /certbot-etc/live/$HOSTED_URL;cp /staging-certs/* /certbot-etc/live/$HOSTED_URL"
+sudo docker-compose --env-file ./settings/common.env run nginx
