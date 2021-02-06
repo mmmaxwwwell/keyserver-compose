@@ -2,13 +2,15 @@
 [[ -d settings ]] || cp -r settings.example settings
 
 mkdir -p ./appdata/nginx
-[[ -d ./appdata/nginx/dhparam.pem ]] || openssl dhparam -out ./appdata/nginx/dhparam.pem 4096
+if [ ! -f ./appdata/nginx/dhparam.pem ]; then
+    openssl dhparam -out ./appdata/nginx/dhparam.pem 4096
+fi
 
 if [ -d "./settings" ] 
 then
     echo "It looks like the settings folder already exists."
     echo "Do you want to overwrite the existing passwords? [y/N]"
-    read -i N -e OVERWRITE
+    read -e OVERWRITE
 else
     OVERWRITE=y
 fi
@@ -50,7 +52,7 @@ if [ "$OVERWRITE" == "y" ]; then
 fi
 
 echo "Do you want to load the passwords into mongo? [y/N]"
-read -i N -e RELOAD
+read -e RELOAD
 
 if [ "$RELOAD" == "y" ]; then
     echo "Setting up mongo admin and keyserver user..."
@@ -58,9 +60,5 @@ if [ "$RELOAD" == "y" ]; then
     ./bootstrap
     cd ..
 fi
-
-#copy temp certs
-source ./settings/common.env
-sudo docker run --rm -it -v ${PWD##*/}_certbot-etc:/certbot-etc -v $(pwd)/staging-certs:/staging-certs bash /usr/local/bin/bash -c " mkdir -p /certbot-etc/live/$HOSTED_URL;cp /staging-certs/* /certbot-etc/live/$HOSTED_URL"
 
 echo "Setup complete"
