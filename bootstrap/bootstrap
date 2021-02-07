@@ -5,4 +5,4 @@ mkdir -p ../appdata/keyserver
 set -a
 source ../settings/mongo.env
 set +a
-sudo ./expect "$MONGODB_ADMIN_USER" "$MONGODB_ADMIN_PASS" "$KEYSERVER_MONGODB_USER" "$KEYSERVER_MONGODB_PASS"
+sudo ./expect "$MONGODB_ADMIN_USER" "$MONGODB_ADMIN_PASS" "$KEYSERVER_MONGODB_USER" "$KEYSERVER_MONGODB_PASS" > /dev/null

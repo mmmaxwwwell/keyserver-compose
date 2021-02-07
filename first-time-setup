@@ -52,15 +52,21 @@ if [ "$OVERWRITE" == "y" ] || ["$OVERWRITE" == "Y" ]; then
         fi
     fi
 
+    #find and replace mongo creds
     sed -i '/MONGODB_ADMIN_USER/d' ./settings/mongo.env > /dev/null
     sed -i '/MONGODB_ADMIN_PASS/d' ./settings/mongo.env > /dev/null
     sed -i '/KEYSERVER_MONGODB_USER/d' ./settings/mongo.env > /dev/null
     sed -i '/KEYSERVER_MONGODB_PASS/d' ./settings/mongo.env > /dev/null
-
     echo "MONGODB_ADMIN_USER=$MONGODB_ADMIN_USER" >> ./settings/mongo.env
     echo "MONGODB_ADMIN_PASS=$MONGODB_ADMIN_PASS" >> ./settings/mongo.env
     echo "KEYSERVER_MONGODB_USER=$KEYSERVER_MONGODB_USER" >> ./settings/mongo.env
     echo "KEYSERVER_MONGODB_PASS=$KEYSERVER_MONGODB_PASS" >> ./settings/mongo.env
+
+    #find and replace keyserver mongo creds
+    sed -i '/MONGO_USER/d' ./settings/keyserver.env > /dev/null
+    sed -i '/MONGO_PASS/d' ./settings/keyserver.env > /dev/null
+    echo "MONGO_USER=$KEYSERVER_MONGODB_USER" >> ./settings/keyserver.env
+    echo "MONGO_PASS=$KEYSERVER_MONGODB_PASS" >> ./settings/keyserver.env
 fi
 
 echo "Do you want to load the passwords into mongo? [y/N]"
@@ -83,4 +89,22 @@ if [ ! -f ./appdata/nginx/dhparam.pem ]; then
     fi
 fi
 
-echo "Setup complete"
+echo "Automated setup complete, although there is more for you to do."
+echo "You must also replace the following variables in the following files:"
+echo "settings/common.env"
+echo "  HOSTED_URL"
+echo "  ADMIN_EMAIL"
+echo "settings/keyserver.env"
+echo "  SMTP_HOST"
+echo "  SMTP_PORT"
+echo "  SMTP_USER"
+echo "  SMTP_PASS"
+echo "  SENDER_EMAIL"
+echo "  ORG_NAME"
+echo "You must also validate these settings in the following files:"
+echo "settings/keyserver.env"
+echo "  SMTP_TLS"
+echo "  SMTP_STARTTLS"
+echo "  SMTP_PGP"
+echo "  ALLOWED_DOMAINS"
+echo "  NUM_PROCESSES"

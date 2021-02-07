@@ -1,5 +1,0 @@
-#!/bin/bash
-git clone https://github.com/mmmaxwwwell/keyserver.git
-cd keyserver
-git checkout develop
-cd ..
