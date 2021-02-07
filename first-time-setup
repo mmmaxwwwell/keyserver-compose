@@ -1,4 +1,11 @@
 #!/bin/bash
+
+function random_string()
+{
+    local length="$((32 + $RANDOM % 64))"
+    echo "$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $length | head -n 1)"
+}
+
 [[ -d settings ]] || cp -r settings.example settings
 
 if [ -d "./settings" ] 
@@ -10,29 +17,39 @@ else
     OVERWRITE=y
 fi
 
-if [ "$OVERWRITE" == "y" ]; then
-    echo "Enter the mongo admin username"
-    read MONGODB_ADMIN_USER
+if [ "$OVERWRITE" == "y" ] || ["$OVERWRITE" == "Y" ]; then
+    echo "Do you want to generate a random username and password? [Y/n]"
+    read -e RANDOMPASS
 
-    echo "Enter the mongo admin password:"
-    read -s MONGODB_ADMIN_PASS
-    echo "Enter the mongo admin password again:"
-    read -s MONGODB_ADMIN_PASS2
-    if [ "$MONGODB_ADMIN_PASS" != "$MONGODB_ADMIN_PASS2" ]; then
-        echo "password mismatch, retry"
-        exit
-    fi
+    if [ "${RANDOMPASS:-Y}" == "Y" ] || ["${RANDOMPASS:-y}" == "y" ]; then
+        MONGODB_ADMIN_PASS="$(random_string)"
+        MONGODB_ADMIN_USER="$(random_string)"
+        KEYSERVER_MONGODB_USER="$(random_string)"
+        KEYSERVER_MONGODB_PASS="$(random_string)"
+    else
+        echo "Enter the mongo admin username"
+        read MONGODB_ADMIN_USER
 
-    echo "Enter the keyserver mongo username"
-    read KEYSERVER_MONGODB_USER
+        echo "Enter the mongo admin password:"
+        read -s MONGODB_ADMIN_PASS
+        echo "Enter the mongo admin password again:"
+        read -s MONGODB_ADMIN_PASS2
+        if [ "$MONGODB_ADMIN_PASS" != "$MONGODB_ADMIN_PASS2" ]; then
+            echo "password mismatch, retry"
+            exit
+        fi
 
-    echo "Enter the keyserver mongo password:"
-    read -s KEYSERVER_MONGODB_PASS
-    echo "Enter the keyserver mongo password again:"
-    read -s KEYSERVER_MONGODB_PASS2
-    if [ "$KEYSERVER_MONGODB_PASS" != "$KEYSERVER_MONGODB_PASS2" ]; then
-        echo "password mismatch, retry"
-        exit
+        echo "Enter the keyserver mongo username"
+        read KEYSERVER_MONGODB_USER
+
+        echo "Enter the keyserver mongo password:"
+        read -s KEYSERVER_MONGODB_PASS
+        echo "Enter the keyserver mongo password again:"
+        read -s KEYSERVER_MONGODB_PASS2
+        if [ "$KEYSERVER_MONGODB_PASS" != "$KEYSERVER_MONGODB_PASS2" ]; then
+            echo "password mismatch, retry"
+            exit
+        fi
     fi
 
     sed -i '/MONGODB_ADMIN_USER/d' ./settings/mongo.env > /dev/null
@@ -58,7 +75,12 @@ fi
 
 mkdir -p ./appdata/nginx
 if [ ! -f ./appdata/nginx/dhparam.pem ]; then
-    openssl dhparam -out ./appdata/nginx/dhparam.pem 4096
+    echo "It looks like you already have a dhparam.pem, would you like to regenerate it? [y/N]"
+    read -e REGEN
+
+    if [ "$REGEN" == "y" ] || [ "$REGEN" == "Y" ]; then
+        openssl dhparam -out ./appdata/nginx/dhparam.pem 4096
+    fi
 fi
 
 echo "Setup complete"
