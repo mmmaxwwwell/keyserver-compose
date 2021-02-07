@@ -3,8 +3,8 @@ server {
     server_name _;
 
     location ~ /\.(?!well-known) {
-        #deny all;
-        root /var/www/html;
+        deny all;
+        #root /var/www/html;
     }
 
     location ~ /\.well-known/acme-challenge {

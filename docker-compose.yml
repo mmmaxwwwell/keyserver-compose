@@ -45,7 +45,10 @@ services:
     env_file:
       - ./settings/common.env
   certbot:
-    image: certbot/certbot
+    #image: certbot/certbot
+    build:
+      context: ./certbot/
+      dockerfile: ./Dockerfile
     container_name: certbot
     volumes:
     - certbot-etc:/etc/letsencrypt
