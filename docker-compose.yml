@@ -28,7 +28,7 @@ services:
       - keyserver-db
     command: mongod --config /etc/mongod.conf
   nginx:
-    image: nginx:stable
+    image: mmmaxwwwell/nginx:latest
     container_name: nginx
     restart: always
     volumes:
@@ -37,8 +37,6 @@ services:
      - certbot-var:/var/lib/letsencrypt
      - ./appdata/nginx/dhparam.pem:/etc/ssl/certs/dhparam.pem
      - ./templates:/etc/nginx/templates
-     - ./scripts/nginx/99-use-staging-certs.sh:/docker-entrypoint.d/99-use-staging-certs.sh
-     - ./staging-certs:/etc/nginx/staging
     ports: 
       - "80:80"
       - "443:443"
@@ -46,8 +44,6 @@ services:
       - keyserver
     env_file:
       - ./settings/common.env
-    #command: /bin/bash -c "envsubst '$${HOSTED_URL} $${KEYSERVER_URL}' < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
-    #command: /bin/bash -c "/docker-entrypoint.sh nginx || /bin/bash"
   certbot:
     image: certbot/certbot
     container_name: certbot
